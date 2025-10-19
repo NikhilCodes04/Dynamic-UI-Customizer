@@ -9,6 +9,7 @@ import * as THREE from 'three';
 // This component loads the GLB model
 function ChairModel() {
     const { scene } = useGLTF('https://gvh2efpdvae0r9bf.public.blob.vercel-storage.com/gaming-chair.glb');
+    //const { scene } = useGLTF('/models/gaming-chair.glb');
     const { materials: editorMaterials } = useEditorStore((state) => state);
 
     const clonedScene = useMemo(() => {
