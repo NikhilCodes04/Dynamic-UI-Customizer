@@ -1,20 +1,34 @@
 'use client';
 
 import React, { Suspense, useMemo } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Environment, useGLTF } from '@react-three/drei';
+import { Canvas, useLoader } from '@react-three/fiber';
+import { OrbitControls, Environment } from '@react-three/drei';
 import { useEditorStore } from '@/store/storeEditor';
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+
+// Model URL constant - using GitHub media URL for LFS files
+const MODEL_URL = 'https://media.githubusercontent.com/media/NikhilCodes04/Dynamic-UI-Customizer/main/public/models/gaming-chair.glb';
+
+// Loading indicator component
+function LoadingBox() {
+    return (
+        <mesh>
+            <boxGeometry args={[2, 2, 2]} />
+            <meshStandardMaterial color="#666" wireframe />
+        </mesh>
+    );
+}
 
 // This component loads the GLB model
 function ChairModel() {
-    const { scene } = useGLTF('https://gvh2efpdvae0r9bf.public.blob.vercel-storage.com/gaming-chair.glb');
-    //const { scene } = useGLTF('/models/gaming-chair.glb');
+    // Using GitHub Releases CDN - reliable and fast
+    const gltf = useLoader(GLTFLoader, MODEL_URL);
     const { materials: editorMaterials } = useEditorStore((state) => state);
 
     const clonedScene = useMemo(() => {
-        const cloned = scene.clone();
-        cloned.traverse((child) => {
+        const cloned = gltf.scene.clone();
+        cloned.traverse((child: THREE.Object3D) => {
             if ((child as THREE.Mesh).isMesh) {
                 const mesh = child as THREE.Mesh;
                 mesh.castShadow = true;
@@ -33,7 +47,7 @@ function ChairModel() {
             }
         });
         return cloned;
-    }, [scene, editorMaterials.leather.color]);
+    }, [gltf.scene, editorMaterials.leather.color]);
 
     return <primitive object={clonedScene} scale={1} position={[-200, 50, 0]} />;
 }
@@ -50,7 +64,7 @@ export function ThreeDViewer() {
                 shadow-mapSize-width={2048}
                 shadow-mapSize-height={2048}
             />
-            <Suspense fallback={null}>
+            <Suspense fallback={<LoadingBox />}>
                 <ChairModel />
                 <Environment preset="city" />
             </Suspense>

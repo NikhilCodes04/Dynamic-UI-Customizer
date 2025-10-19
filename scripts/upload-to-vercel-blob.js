@@ -22,6 +22,7 @@ async function uploadModel() {
             contentType: 'model/gltf-binary',
             addRandomSuffix: false,
             allowOverwrite: true,
+            cacheControlMaxAge: 31536000,
         });
 
         console.log('✅ Upload successful!');
