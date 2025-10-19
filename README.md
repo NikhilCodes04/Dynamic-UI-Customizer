@@ -143,7 +143,17 @@ In modern applications like dashboards, admin panels, or SaaS platforms, design 
    pnpm install
    ```
 
-3. **Run the development server**
+3. **Set up environment variables (for 3D model hosting)**
+   
+   If you need to re-upload the 3D model to Vercel Blob:
+   ```bash
+   # Create .env.local file
+   echo BLOB_READ_WRITE_TOKEN=your_vercel_blob_token > .env.local
+   ```
+   
+   Get your token from [Vercel Dashboard](https://vercel.com/dashboard) → Storage → Blob
+
+4. **Run the development server**
    ```bash
    npm run dev
    # or
@@ -152,7 +162,7 @@ In modern applications like dashboards, admin panels, or SaaS platforms, design 
    pnpm dev
    ```
 
-4. **Open in browser**
+5. **Open in browser**
    
    Navigate to [http://localhost:3000](http://localhost:3000)
 
@@ -162,6 +172,12 @@ In modern applications like dashboards, admin panels, or SaaS platforms, design 
 npm run build
 npm start
 ```
+
+### 3D Model Hosting
+
+The 3D chair model is hosted on **Vercel Blob Storage** for optimal performance and CDN delivery.
+
+
 
 ## 📦 Component API
 
